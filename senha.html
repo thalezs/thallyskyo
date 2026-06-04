@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Senha</title>
+
+<style>
+@font-face {
+    font-family: 'Heart';
+    src: url('fonts/fonte.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    overflow:hidden;
+    animation:fadeIn 1s ease;
+}
+
+/* Gradiente de Fundo */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top center,
+    rgba(193,132,255,.9),
+    transparent 45%),
+    radial-gradient(circle at bottom left,
+    rgba(193,132,255,.8),
+    transparent 40%),
+    radial-gradient(circle at bottom right,
+    rgba(193,132,255,.8),
+    transparent 40%);
+    filter:blur(80px);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(
+        circle at center,
+        rgba(255,255,255,.9),
+        transparent 60%
+    );
+    filter:blur(50px);
+    z-index:-1;
+}
+
+.container{
+    width:90%;
+    max-width:400px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.titulo{
+    color:#bb63ff;
+    font-size:3rem;
+    margin-bottom:40px;
+}
+
+.data{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.data input{
+    width:70px;
+    height:70px;
+    border:none;
+    outline:none;
+    border-radius:20px;
+    background:white;
+    text-align:center;
+    font-size:2rem;
+    color:#bb63ff;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.separador{
+    font-size:2.5rem;
+    color:#bb63ff;
+}
+
+.btn{
+    margin-top:50px;
+    width:120px;
+    height:120px;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+.btn img{
+    width:100%;
+    transition:.3s;
+}
+
+.btn:active img{
+    transform:scale(.95);
+}
+
+.erro{
+    margin-top:20px;
+    color:#d26eff;
+    font-size:1.5rem;
+    opacity:0;
+    transition:.3s;
+}
+
+.erro.mostrar{
+    opacity:1;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.btn.animar{
+    animation: abrirCoracao .8s ease forwards;
+}
+
+@keyframes abrirCoracao{
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+    20%{
+        transform:scale(1.15);
+        opacity:1;
+    }
+    100%{
+        transform:scale(2.5);
+        opacity:0;
+    }
+}
+
+body.fade-out{
+    animation: fadeOut .8s forwards;
+}
+
+@keyframes fadeOut{
+    from{ opacity:1; }
+    to{ opacity:0; }
+}
+</style>
+</head>
+<body>
+
+<audio id="musica-fundo" loop>
+    <source src="mp3/attracted_to_you-_pinkpantheress_sped_up.mp3" type="audio/mpeg">
+</audio>    
+
+<div class="container">
+    <h1 class="titulo">Senha ?</h1>
+
+    <div class="data">
+        <input id="dia" maxlength="2" placeholder="DD" inputmode="numeric">
+        <span class="separador">/</span>
+        <input id="mes" maxlength="2" placeholder="MM" inputmode="numeric">
+        <span class="separador">/</span>
+        <input id="ano" maxlength="2" placeholder="AA" inputmode="numeric">
+    </div>
+
+    <button class="btn" id="entrar">
+        <img src="img/coração.png" alt="Entrar">
+    </button>
+
+    <p class="erro" id="erro">
+        Deixa de Jazzica!
+    </p>
+</div>
+
+<script>
+const entrar = document.getElementById("entrar");
+const erro = document.getElementById("erro");
+
+// Lógica de validação da senha
+entrar.addEventListener("click", () => {
+    const dia = document.getElementById("dia").value;
+    const mes = document.getElementById("mes").value;
+    const ano = document.getElementById("ano").value;
+
+    if(dia === "01" && mes === "02" && ano === "26"){
+        entrar.classList.add("animar");
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            window.location.href = "inicial.html";
+        }, 800);
+    } else {
+        erro.classList.add("mostrar");
+        setTimeout(() => {
+            erro.classList.remove("mostrar");
+        }, 2500);
+    }
+});
+
+// Pular automaticamente para o próximo input após digitar 2 caracteres
+const inputs = document.querySelectorAll(".data input");
+inputs.forEach((input, index) => {
+    input.addEventListener("input", () => {
+        if (input.value.length === 2 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+    });
+});
+</script>
+
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+musicaFundo.volume = 0.01;
+
+// Ativa a música aos 80 segundos no primeiro clique na tela
+document.addEventListener("click", () => {
+    if (musicaFundo.paused) {
+        musicaFundo.currentTime = 14; // Define o tempo inicial da música para 80 segundos
+        musicaFundo.play();
+    }
+}, { once: true });
+</script>
+
+</body>
+</html>

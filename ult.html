@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Feliz Aniversário</title>
+
+<style>
+
+@font-face{
+    font-family:'Heart';
+    src:url('fonts/fonte.ttf') format('truetype');
+}
+
+@font-face{
+    font-family:'Cute';
+    src:url('fonts/Sweetest Cat Ever.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 20px;
+    position: relative;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top center,
+    rgba(193,132,255,.9),
+    transparent 45%),
+    radial-gradient(circle at bottom left,
+    rgba(193,132,255,.8),
+    transparent 40%),
+    radial-gradient(circle at bottom right,
+    rgba(193,132,255,.8),
+    transparent 40%);
+    filter:blur(80px);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center,
+    rgba(255,255,255,.9),
+    transparent 60%);
+    filter:blur(50px);
+    z-index:-1;
+}
+
+/* Área fixa do topo para organizar o botão voltar */
+.topo-navegacao {
+    width: 100%;
+    max-width: 430px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    z-index: 10;
+}
+
+.voltar{
+    background:#dcb3ff;
+    color:white;
+    border:none;
+    border-radius:15px;
+    padding:10px 15px;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow: 0 5px 15px rgba(187,99,255,.15);
+    transition: .2s;
+}
+
+.voltar:hover{
+    transform:translateY(-2px);
+    background: #c58dff;
+}
+
+.voltar:active{
+    transform:scale(.95);
+}
+
+h1{
+    color:#bb63ff;
+    font-size:3.5rem;
+    margin-bottom:30px;
+    text-align: center;
+}
+
+.bolo{
+    position:relative;
+    width:320px;
+    height:260px;
+    margin-top: 10px;
+}
+
+.topo{
+    position:absolute;
+    bottom:120px;
+    width:100%;
+    height:40px;
+    background:#f8e8ff;
+    border-radius:30px;
+}
+
+.base{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:140px;
+    background:#dcb3ff;
+    border-radius:25px;
+    box-shadow: 0 15px 35px rgba(187,99,255,.25);
+}
+
+.velas{
+    position:absolute;
+    bottom:145px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.vela{
+    width:8px;
+    height:40px;
+    background:white;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.chama{
+    position:absolute;
+    top:-16px;
+    left:50%;
+    width:12px;
+    height:18px;
+    transform: translateX(-50%) rotate(15deg);
+    background:#ffd86b;
+    border-radius:50%;
+    animation:flicker .7s infinite;
+}
+
+@keyframes flicker{
+    0%{ transform: translateX(-50%) rotate(15deg) scale(1); }
+    50%{ transform: translateX(-50%) rotate(10deg) scale(1.15); }
+    100%{ transform: translateX(-50%) rotate(18deg) scale(.95); }
+}
+
+.apagada .chama{
+    display:none;
+}
+
+.fumaca{
+    position:absolute;
+    width:14px;
+    height:14px;
+    background:rgba(180,180,180,.5);
+    border-radius:50%;
+    left:50%;
+    top:-15px;
+    transform:translateX(-50%);
+    animation:subir 1.5s forwards;
+}
+
+@keyframes subir{
+    from{ opacity:1; transform: translateX(-50%) translateY(0); }
+    to{ opacity:0; transform: translateX(-50%) translateY(-50px); }
+}
+
+.contador{
+    margin-top:30px;
+    color:#bb63ff;
+    font-size:1.8rem;
+}
+
+#assoprarBtn{
+    margin-top:20px;
+    border:none;
+    background:#dcb3ff;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:1rem;
+    box-shadow: 0 10px 25px rgba(187,99,255,.2);
+    transition: .3s;
+}
+
+#assoprarBtn:hover{
+    transform: scale(1.05);
+}
+
+.pedido-area{
+    width:90%;
+    max-width:380px;
+    margin-top:40px;
+    background:white;
+    padding:25px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow: 0 15px 40px rgba(187,99,255,.15);
+    opacity:0;
+    transform: translateY(40px);
+    pointer-events:none;
+    transition: .8s ease;
+}
+
+.pedido-area.mostrar{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+    animation:aparecer .8s ease;
+}
+
+@keyframes aparecer{
+    from{ opacity:0; transform: translateY(40px) scale(.95); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+.pedido-area h2{
+    color:#bb63ff;
+    margin-bottom:10px;
+}
+
+.pedido-area p{
+    color:#a56df0;
+    margin-bottom:15px;
+}
+
+.pedido-area textarea{
+    width:100%;
+    height:120px;
+    resize:none;
+    border:none;
+    outline:none;
+    background:#f8f2ff;
+    border-radius:20px;
+    padding:15px;
+    font-size:1rem;
+    color:#a56df0;
+    margin-bottom:15px;
+}
+
+.pedido-area textarea::placeholder{
+    color:#caa5f5;
+}
+
+.pedido-area button{
+    border:none;
+    background:#dcb3ff;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.pedido-area button:hover{
+    transform:scale(1.05);
+}
+
+.final{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#bb63ff;
+    font-size:2rem;
+    opacity:0;
+    pointer-events:none;
+    transition:1s;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.final.mostrar{
+    opacity:1;
+    pointer-events: auto;
+}
+
+</style>
+</head>
+<body>      
+<audio id="musica-fundo" loop>
+    <source src="mp3/pinkpantheress_-_Break_It_Off_slowed_reverb_TikTok.mp3" type="audio/mpeg">
+</audio>    
+<div class="topo-navegacao">
+    <button class="voltar" onclick="voltarHistorico()">
+        ← Voltar
+    </button>
+</div>
+
+<h1>Assopre as velinhas!</h1>
+
+<div class="bolo">
+    <div class="topo"></div>
+    <div class="velas" id="velas"></div>
+    <div class="base"></div>
+</div>
+
+<div class="contador">
+    Velas restantes: <span id="restantes">15</span>
+</div>
+
+<button id="assoprarBtn">
+    Soprar as velas
+</button>
+
+<div class="pedido-area" id="pedidoArea">
+    <h2>Faça um pedido!</h2>
+    <p>Confie em você mesmo</p>
+    <textarea id="pedido" placeholder="Escreva seu desejo aqui:"></textarea>
+    <button id="pedidoBtn">Realizar pedido</button>
+</div>
+
+<div class="final" id="final">
+    <div>
+        <br><br>
+        Que seus 15 anos sejam incríveis.<br><br>
+        Você merece toda felicidade do mundo, meu amor!
+    </div>
+</div>
+
+<script>
+const velasDiv = document.getElementById("velas");
+const restantesTxt = document.getElementById("restantes");
+const pedidoArea = document.getElementById("pedidoArea");
+const final = document.getElementById("final");
+const pedidoBtn = document.getElementById("pedidoBtn");
+const assoprarBtn = document.getElementById("assoprarBtn");
+
+let restantes = 15;
+
+// Criação dinâmica das 15 velas
+for(let i = 0; i < 15; i++){
+    const vela = document.createElement("div");
+    vela.classList.add("vela");
+
+    const chama = document.createElement("div");
+    chama.classList.add("chama");
+
+    vela.appendChild(chama);
+
+    vela.addEventListener("click", () => {
+        if(vela.classList.contains("apagada")) return;
+
+        vela.classList.add("apagada");
+
+        const fumaca = document.createElement("div");
+        fumaca.classList.add("fumaca");
+        vela.appendChild(fumaca);
+
+        setTimeout(() => {
+            fumaca.remove();
+        }, 1500);
+
+        restantes--;
+        restantesTxt.textContent = restantes;
+
+        if(restantes === 0){
+            setTimeout(() => {
+                pedidoArea.classList.add("mostrar");
+            }, 1200);
+        }
+    });
+
+    velasDiv.appendChild(vela);
+}
+
+// Evento do botão realizar pedido
+pedidoBtn.addEventListener("click", () => {
+    const pedido = document.getElementById("pedido").value;
+
+    pedidoArea.style.opacity = "0";
+    pedidoArea.style.transform = "translateY(40px)";
+
+    setTimeout(() => {
+        pedidoArea.style.display = "none";
+        final.classList.add("mostrar");
+    }, 500);
+});
+
+// Lógica de captação de áudio pelo microfone
+assoprarBtn.addEventListener("click", async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+        const analyser = audioContext.createAnalyser();
+
+        source.connect(analyser);
+        analyser.fftSize = 256;
+        const data = new Uint8Array(analyser.frequencyBinCount);
+
+        assoprarBtn.textContent = "Assopre agora 💨";
+
+        function detectarAssopro(){
+            analyser.getByteFrequencyData(data);
+            let volume = 0;
+
+            for(let i = 0; i < data.length; i++){
+                volume += data[i];
+            }
+            volume = volume / data.length;
+
+            if(volume > 35){
+                apagarTudo();
+                stream.getTracks().forEach(track => track.stop());
+                return;
+            }
+            requestAnimationFrame(detectarAssopro);
+        }
+        detectarAssopro();
+
+    } catch(err) {
+        alert("Permita o acesso ao microfone para assoprar!");
+    }
+});
+
+// Função única para apagar de forma encadeada e limpa
+function apagarTudo(){
+    const velas = document.querySelectorAll(".vela");
+
+    velas.forEach((vela, index) => {
+        setTimeout(() => {
+            if(vela.classList.contains("apagada")) return;
+
+            vela.classList.add("apagada");
+
+            const fumaca = document.createElement("div");
+            fumaca.classList.add("fumaca");
+            vela.appendChild(fumaca);
+        }, index * 120);
+    });
+
+    restantes = 0;
+
+    setTimeout(() => {
+        restantesTxt.textContent = 0;
+        pedidoArea.classList.add("mostrar");
+    }, (velas.length * 120) + 1000);
+}
+
+// Função de segurança para o botão voltar funcionar corretamente
+function voltarHistorico() {
+    if (history.length > 1) {
+        history.back();
+    } else {
+        window.location.href = "index.html"; // Altere aqui para a página inicial caso acesse o link direto
+    }
+}
+
+</script>
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+
+musicaFundo.volume = 0.01;
+
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+</script>
+</body>
+</html>

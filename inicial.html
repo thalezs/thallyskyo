@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>inicial</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+<style>
+@font-face {
+    font-family: 'Heart';
+    src: url('fonts/fonte.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding: 0;
+    box-sizing:border-box;
+    font-family:'Heart', sans-serif;
+}
+
+p{
+    color: #bb63ff;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    background:#f8f8f8;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top center,
+        rgba(205,160,255,.6),
+        transparent 40%),
+    radial-gradient(circle at bottom left,
+        rgba(205,160,255,.5),
+        transparent 35%),
+    radial-gradient(circle at bottom right,
+        rgba(205,160,255,.5),
+        transparent 35%);
+    filter:blur(40px);
+    pointer-events:none;
+    z-index:-1;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    padding:50px 30px;
+}
+
+h1{
+    color:#bb63ff;
+    font-size:3rem;
+    line-height:1;
+}
+
+#data{
+    margin-top:15px;
+    color:#c67eff;
+    font-size:2.3rem;
+}
+
+/* CONTAINER DO TIMER - Ajustado para caber o novo formato */
+.contador{
+    width:100%;
+    min-height:140px;
+    margin-top:35px;
+    background:#d8b0ff;
+    border-radius:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 15px;
+    box-shadow: 0 10px 25px rgba(187,99,255,.25);
+}
+
+/* Grid interna para alinhar os números e as legendas perfeitamente */
+.timer-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.timer-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.timer-numero {
+    color: white;
+    font-size: 3.5rem;
+    font-family: "Caveat", cursive;
+    line-height: 0.9;
+}
+
+.timer-legenda {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    font-family: "Caveat", cursive;
+    margin-top: 2px;
+}
+
+.frase{
+    margin-top:30px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:#c67eff;
+    font-size:2rem;
+    font-family:"Caveat", cursive;
+}
+
+.seta{
+    font-size:3rem;
+}
+
+.titulo{
+    margin-top:70px;
+    color:#bb63ff;
+    font-size:2rem;
+    font-family:"Permanent Marker", cursive;
+}
+
+.menu{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px 20px;
+}
+
+.botao{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:none;
+    border:none;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.botao:active{
+    transform:scale(.95);
+}
+
+.botao{
+    width:130px;
+    height:130px;
+    border:none;
+    background:none;
+    padding:0;
+    cursor:pointer;
+}
+
+.botao img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.placeholder{
+    width:130px;
+    height:130px;
+    border-radius:20px;
+    border:2px dashed #c67eff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#c67eff;
+    font-family:sans-serif;
+    overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<audio id="musica-fundo" loop>
+    <source src="mp3/Love_For_You_Audio_Slowed_-_Loveli_Lori_Ovg.mp3" type="audio/mpeg">
+</audio>
+
+    <h1>BEM VINDO, KYO!</h1>
+    <br>
+
+    <h3><p id="data"></p></h3>
+
+    <div class="contador">
+        <div class="timer-grid">
+            <div class="timer-bloco">
+                <span class="timer-numero" id="timer-dias">00</span>
+                <span class="timer-legenda">dias</span>
+            </div>
+            <div class="timer-bloco">
+                <span class="timer-numero" id="timer-horas">00</span>
+                <span class="timer-legenda">horas</span>
+            </div>
+            <div class="timer-bloco">
+                <span class="timer-numero" id="timer-minutos">00</span>
+                <span class="timer-legenda">min</span>
+            </div>
+            <div class="timer-bloco">
+                <span class="timer-numero" id="timer-segundos">00</span>
+                <span class="timer-legenda">seg</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="frase">
+        <span class="seta">→</span>
+        <span>desde que minha vida mudou</span>
+    </div>
+
+    <h3 class="titulo">ESCOLHA:</h3>
+
+    <div class="menu">
+        <a href="carta.html">
+            <button class="botao">
+                <div class="placeholder">
+                    <img src="img/carta.jpg" alt="">
+                </div>
+            </button>
+        </a>
+        <a href="msc.html">
+            <button class="botao">
+                <div class="placeholder">
+                    <img src="img/msc.jpg" alt="">
+                </div>
+            </button>
+        </a>
+        <a href="cartinhas.html">
+            <button class="botao">
+                <div class="placeholder">
+                    <img src="img/out.jpg" alt="">
+                </div>
+            </button>
+        </a>
+        <a href="ult.html">
+            <button class="botao">
+                <div class="placeholder">
+                    <img src="img/ft.jpg" alt="">
+                </div>
+            </button>
+        </a>
+    </div>
+
+</div>
+
+<script>
+// Exibe a data de hoje formatada no topo
+const hoje = new Date();
+document.getElementById("data").textContent = hoje.toLocaleDateString("pt-BR");
+
+// Define a data inicial (01 de Fevereiro de 2026)
+const dataInicio = new Date("2026-02-01T00:00:00");
+
+function atualizarTimer() {
+    const agora = new Date();
+    const diferenca = agora - dataInicio;
+
+    // Lógica matemática para extrair cada pedaço do tempo
+    const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+    // injeta os valores nas respectivas tags formatando com um zero à esquerda se for menor que 10
+    document.getElementById("timer-dias").textContent = String(dias).padStart(2, '0');
+    document.getElementById("timer-horas").textContent = String(horas).padStart(2, '0');
+    document.getElementById("timer-minutos").textContent = String(minutos).padStart(2, '0');
+    document.getElementById("timer-segundos").textContent = String(segundos).padStart(2, '0');
+}
+
+// Executa a função imediatamente e define o intervalo para rodar a cada 1 segundo
+atualizarTimer();
+setInterval(atualizarTimer, 1000);
+</script>
+
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+musicaFundo.volume = 0.04;
+
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+</script>
+
+</body>
+</html>

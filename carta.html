@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<style>
+
+@font-face{
+    font-family:'Heart';
+    src:url('fonts/fonte.ttf') format('truetype');
+}
+
+@font-face{
+    font-family:'Cute';
+    src:url('fonts/Sweetest Cat Ever.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top center,
+    rgba(193,132,255,.9),
+    transparent 45%),
+    radial-gradient(circle at bottom left,
+    rgba(193,132,255,.8),
+    transparent 40%),
+    radial-gradient(circle at bottom right,
+    rgba(193,132,255,.8),
+    transparent 40%);
+    filter:blur(80px);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center,
+    rgba(255,255,255,.9),
+    transparent 60%);
+    filter:blur(50px);
+    z-index:-1;
+}
+
+.container{
+    max-width:430px;
+    width: 100%;
+    margin:auto;
+    padding:30px 20px 80px;
+    position: relative; /* Base para o posicionamento do botão quando aberto */
+}
+
+/* Área do topo para alinhar o botão voltar */
+.topo-acoes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 45px;
+}
+
+.voltar{
+    width:fit-content;
+    background:#dcb3ff;
+    color:white;
+    border:none;
+    border-radius:15px;
+    padding:10px 15px;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow: 0 5px 15px rgba(187,99,255,.15);
+    transition: background 0.3s;
+}
+
+.voltar:hover{
+    background: #c58dff;
+}
+
+.titulo{
+    text-align:center;
+    color:#bb63ff;
+    font-size:3rem;
+    margin:30px 0;
+}
+
+.envelope-area{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position: relative;
+    width: 100%;
+}
+
+.envelope{
+    position:relative;
+    width:320px;
+    height:220px;
+    margin-top:140px; 
+}
+
+.corpo{
+    position:absolute;
+    inset:0;
+    background:#dcb3ff;
+    border-radius:0 0 25px 25px;
+    z-index:3;
+    box-shadow: 0 10px 30px rgba(187,99,255,.2);
+}
+
+.tampa{
+    position:absolute;
+    width:100%;
+    height:130px;
+    background:#c58dff;
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top;
+    transition: transform 0.8s ease-in-out, z-index 0.6s;
+    z-index:4;
+}
+
+.carta{
+    position:absolute;
+    left:10px;
+    top: 10px;
+    width:300px;
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    color:#a56df0;
+    z-index:2;
+    transform: translateY(0);
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 0.8s, z-index 0.8s;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.carta h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#bb63ff;
+}
+
+.carta p{
+    font-family:'Cute', sans-serif;
+    font-size:1.3rem;
+    line-height:1.7;
+    margin-bottom:15px;
+}
+
+.assinatura{
+    text-align:right;
+    margin-top:25px;
+}
+
+.abrir{
+    margin-top:40px;
+    border:none;
+    background:#dcb3ff;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    font-size:1.1rem;
+    cursor:pointer;
+    box-shadow: 0 5px 15px rgba(187,99,255,.15);
+    z-index: 5;
+    
+    /* Configuração de transição suave */
+    transition: background 0.3s, transform 0.3s, top 0.5s, right 0.5s, margin 0.5s;
+}
+
+.abrir:hover{
+    background: #c58dff;
+    transform: scale(1.05);
+}
+
+/* --- EFEITO DE ABERTURA --- */
+
+.envelope.aberto .tampa{
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.aberto .carta{
+    transform: translateY(-160px);
+    opacity: 1;
+    z-index: 4;
+}
+
+/* Quando o envelope estiver aberto, move o botão lá para o topo direito da tela */
+.envelope-area:has(.envelope.aberto) .abrir {
+    position: fixed;
+    top: 30px;
+    right: calc(50% - 195px); /* Alinha perfeitamente no canto do container */
+    margin-top: 0;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    background: #bb63ff; /* Cor de destaque para o fechamento */
+}
+
+/* Ajuste fino para telas menores (celulares) para o botão não sumir para fora */
+@media (max-width: 430px) {
+    .envelope-area:has(.envelope.aberto) .abrir {
+        right: 20px;
+    }
+}
+
+</style>
+</head>
+
+<body>  
+
+<audio id="musica-fundo" loop>
+    <source src="mp3/capable_of_love_-_pinkpantheress.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <div class="topo-acoes">
+        <button class="voltar" onclick="voltarPagina()">
+            ← Voltar
+        </button>
+    </div>
+
+    <h1 class="titulo">
+        CARTA 
+    </h1>
+
+    <div class="envelope-area">
+
+        <div class="envelope" id="envelope">
+
+            <div class="tampa"></div>
+            <div class="corpo"></div>
+
+            <div class="carta">
+                <h2>Para você</h2>
+
+                <p>
+                    Kyo, parabéns! 
+Bem, antes disso, tenho que falar algumas coisas, e agradecer também. 
+
+
+Hoje fazem mais de 4 meses que namoramos, e uns 5 que nós nos conhecemos. Em meio de uma introdução meio conturbada, e talvez não muito chamativa. Mas olha onde estamos agora, né? Desde aquele momento que eu conversei com você pelas primeiras vezes, senti que valia a pena cada palavra, ou frase. 
+
+
+Sempre me considerei uma pessoa carente por atenção, ou coisa do tipo. Mas com você eu senti por muito tempo algo que não sentia a muito tempo, o amor. 
+
+Eu me deitava naqueles dias, e pensava: “ Que raios está acontecendo comigo? “, e quando eu enfiava o rosto no meu travesseiro, sabia que tinha um coração, e que ele só estava ali pra bater por você. 
+
+Hoje, vejo como valeu a pena passar madrugadas tentando puxar assunto, ou tentar conseguir uma conversa com você. Já que eu descobri essa pessoa incrível que você é. 
+
+Eu revelei lados de mim pra você, e você os seus, e isso não pareceu mudar a forma que te vejo. Eu consigo ver em você vulnerabilidade, força, resiliência, empatia e um coração lindo. Como você passa por tudo como se fosse comum, coisas que você acha comum, mas são difíceis. Por mais que você pense que é fraca, lembre-se, você não é, e nunca vai ser fraca. 
+
+A vulnerabilidade que você tem, mostra o quão humano você é, não quão fraco. Eu acho lindo como você sempre quer tentar ver o melhor nas pessoas, como tenta ajudar todos nós momentos difíceis, e ter a maturidade de se colocar no lugar do outro quando ninguém mais pensa nisso. 
+
+Às vezes, me pergunto como consegui conquistar uma pessoa tão maravilhosa como você. 
+
+É sério, talvez você acha que eu estou te bajulando, ou coisa do tipo. Mas se eu estiver na minha centésima reencarnação, sei que fomos almas gêmeas nas últimas 99.
+
+Quando eu fico bravo, ou estranho, é de ciúmes, é de medo, medo de perder essa pessoa garota linda, tanto por dentro quanto por fora. 
+
+Eu te amo.
+                </p>
+<br>
+                <p>
+                    Aproveite o seu aniversário de 15 anos! Você só vive uma vez, e tem que aproveitar isso. Seja feliz, é isso que eu mais quero pra você. Você merece tudo de bom que esse mundo pode e não pode lhe oferecer. 
+
+                    Continue sendo essa garota incrível que eu conheci, e espero que possa presenciar mais muitos aniversários seus, meu amor. 
+                </p>
+<br>
+                <p class="assinatura">
+                    Com amor
+                </p>
+            </div>
+
+        </div>
+
+        <button class="abrir" id="abrirBtn">
+            Abrir Carta 
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const envelope = document.getElementById("envelope");
+const btn = document.getElementById("abrirBtn");
+
+btn.addEventListener("click",()=>{
+    envelope.classList.toggle("aberto");
+
+    if(envelope.classList.contains("aberto")){
+        btn.textContent = "Fechar ✖";
+    }else{
+        btn.textContent = "Abrir Carta ";
+    }
+});
+
+function voltarPagina(){
+    if(history.length > 1){
+        history.back();
+    }else{
+        window.location.href = "inicial.html";
+    }
+}
+
+</script>   
+
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+
+musicaFundo.volume = 0.05;
+
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+</script>
+
+</body>
+</html>

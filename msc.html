@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Músicas</title>
+
+<style>
+
+.player{
+
+    background:#dcb3ff;
+
+    border-radius:25px;
+
+    padding:15px;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    box-shadow:
+    0 10px 30px rgba(187,99,255,.15);
+
+    margin-bottom:20px;
+}
+
+.cover{
+    width:70px;
+    height:70px;
+
+    border-radius:15px;
+
+    object-fit:cover;
+}
+
+.info{
+    flex:1;
+}
+
+.info h3{
+    color:white;
+    font-size:1.5rem;
+}
+
+.info p{
+    color:#f8efff;
+    font-size:1rem;
+}
+
+.play-btn{
+
+    width:50px;
+    height:50px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    color:#bb63ff;
+
+    font-size:1.2rem;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.play-btn:active{
+    transform:scale(.9);
+}
+
+@font-face {
+    font-family: 'Heart';
+    src: url('fonts/fonte.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart';
+}
+
+body{
+    background:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle at top center,
+    rgba(193,132,255,.9),
+    transparent 45%),
+
+    radial-gradient(circle at bottom left,
+    rgba(193,132,255,.8),
+    transparent 40%),
+
+    radial-gradient(circle at bottom right,
+    rgba(193,132,255,.8),
+    transparent 40%);
+
+    filter:blur(80px);
+
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(
+        circle at center,
+        rgba(255,255,255,.9),
+        transparent 60%
+    );
+
+    filter:blur(50px);
+
+    z-index:-1;
+}
+
+.container{
+    max-width:430px;
+    margin:auto;
+
+    padding:40px 20px 60px;
+}
+
+.titulo{
+    color:#bb63ff;
+    font-size:3rem;
+
+    margin-bottom:40px;
+}
+
+.grupo{
+    margin-bottom:50px;
+}
+
+.grupo h2{
+    color:#c77dff;
+    font-size:2rem;
+
+    margin-bottom:15px;
+}
+
+.musica{
+    width:100%;
+
+    margin-bottom:15px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+}
+
+.musica iframe{
+    display:block;
+
+    width:100%;
+    height:152px;
+
+    border:none;
+}
+.voltar{
+    background:#dcb3ff;
+    color:white;
+
+    border:none;
+    border-radius:15px;
+
+    padding:10px 15px;
+
+    font-size:1rem;
+    cursor:pointer;
+
+    margin-bottom:20px;
+
+    box-shadow:
+    0 5px 15px rgba(187,99,255,.15);
+
+    transition:.2s;
+}
+
+.voltar:hover{
+    transform:translateY(-2px);
+}
+
+.voltar:active{
+    transform:scale(.95);
+}
+</style>
+</head>
+<body>
+<button class="voltar" onclick="history.back()">
+    ← Voltar
+</button>
+<div class="container">
+
+    <h1 class="titulo">
+        MÚSICAS !
+    </h1>
+
+    <div class="grupo">
+
+        <h2>Músicas que me lembram você:</h2>
+
+<div class="player" data-start="108">
+
+    <img src="https://i.pinimg.com/736x/ea/50/fb/ea50fbf71a0e6b7684efc6b938e3869d.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Pretty When You Cry</h3>
+        <p>Lana del Rey</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/pretty-when-you-cry.mp3"></audio>
+
+</div>
+
+<div class="player" data-start="80">
+
+    <img src="https://i.pinimg.com/736x/f8/e6/1e/f8e61e90309a5e3fa9e2d2b59b09f1f3.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Promisse</h3>
+        <p>Laufey</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/promisse.mp3"></audio>
+
+</div>
+
+<div class="player" data-start="120">
+
+    <img src="https://i.pinimg.com/736x/43/6f/67/436f67b800a57f01ae30e4e9ec3a29f9.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Trash Magic</h3>
+        <p>Lana del Rey</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/trash-magic.mp3"></audio>
+
+</div>
+
+    </div>
+
+    <div class="grupo">
+
+        <h2>Músicas que me lembram de mim:</h2>
+
+        <div class="player" data-start="43">
+
+    <img src="https://i.pinimg.com/736x/c8/29/31/c82931f2003c874a79175b4465b45698.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Feel Better</h3>
+        <p>Penelope Scott</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/Feel_Better.mp3"></audio>
+
+</div>
+
+<div class="player" data-start="25">
+
+    <img src="https://i.pinimg.com/736x/37/81/26/378126ec21878cf46a547aa29d5757f5.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Political Interlude</h3>
+        <p>Ayesha Erotica</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/Ayesha_Erotica_-_Political_Interlude_Reloaded_Soundcloud_Edit.mp3"></audio>
+
+
+    </div>
+
+<div class="player" data-start="59">
+
+    <img src="https://i.pinimg.com/736x/3a/e0/d0/3ae0d0c821154dbb9abd599b76b5ec06.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Dragons Blood</h3>
+        <p>Melanie Martinez</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/DRAGONS_BLOOD.mp3"></audio>
+
+
+    </div>
+
+    <div class="grupo">
+
+        <h2>NOSSA música:</h2>
+
+<div class="player" data-start="34">
+
+    <img src="https://i.pinimg.com/736x/8a/62/b7/8a62b7be26acdcc25cc980f527eb9b3c.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Perfect Pair</h3>
+        <p>Beabadoobee</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/the_perfect_pair.mp3"></audio>
+
+
+    </div>
+
+    </div>
+
+</div>
+
+<div class="player" data-start="34">
+
+    <img src="https://i.pinimg.com/1200x/7d/a2/fc/7da2fc4b391a7712dfde643135172290.jpg" alt="" class="cover">
+
+    <div class="info">
+        <h3>Sailor Song</h3>
+        <p>Gigi Perez</p>
+    </div>
+
+    <button class="play-btn">
+        ▶
+    </button>
+
+    <audio src="mp3/Sailor_Song_slowed_-_Gigi_Perez.mp3"></audio>
+
+
+    </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.querySelectorAll('.player').forEach(player => {
+
+    const btn = player.querySelector('.play-btn');
+    const audio = player.querySelector('audio');
+    const startTime = Number(player.dataset.start) || 0;
+
+    let primeiraVez = true;
+
+    audio.volume = 0.2;
+
+    btn.addEventListener('click', () => {
+
+        if(audio.paused){
+
+            // pausa todas as outras músicas
+            document.querySelectorAll('.player').forEach(outroPlayer => {
+
+                const outroAudio = outroPlayer.querySelector('audio');
+                const outroBtn = outroPlayer.querySelector('.play-btn');
+
+                if(outroAudio !== audio){
+
+                    outroAudio.pause();
+                    outroBtn.textContent = '▶';
+
+                }
+
+            });
+
+            // define o ponto inicial apenas na primeira vez
+            if(primeiraVez){
+
+                audio.currentTime = startTime;
+                primeiraVez = false;
+
+            }
+
+            audio.play();
+            btn.textContent = '⏸';
+
+        }else{
+
+            audio.pause();
+            btn.textContent = '▶';
+
+        }
+
+    });
+
+    // quando a música terminar
+    audio.addEventListener('ended', () => {
+
+        btn.textContent = '▶';
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

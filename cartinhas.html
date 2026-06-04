@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cartinhas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<style>
+
+@font-face{
+    font-family:'Heart';
+    src:url('fonts/fonte.ttf') format('truetype');
+}
+
+@font-face{
+    font-family:'Cute';
+    src:url('fonts/Sweetest Cat Ever.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top center,
+    rgba(193,132,255,.9),
+    transparent 45%),
+    radial-gradient(circle at bottom left,
+    rgba(193,132,255,.8),
+    transparent 40%),
+    radial-gradient(circle at bottom right,
+    rgba(193,132,255,.8),
+    transparent 40%);
+    filter:blur(80px);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center,
+    rgba(255,255,255,.9),
+    transparent 60%);
+    filter:blur(50px);
+    z-index:-1;
+}
+
+.container{
+    max-width:430px;
+    width: 100%;
+    margin:auto;
+    padding:30px 20px 140px; /* Espaço extra embaixo para o botão fixo */
+    position: relative;
+}
+
+.topo-acoes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 45px;
+}
+
+.voltar{
+    width:fit-content;
+    background:#dcb3ff;
+    color:white;
+    border:none;
+    border-radius:15px;
+    padding:10px 15px;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow: 0 5px 15px rgba(187,99,255,.15);
+    transition: background 0.3s;
+}
+
+.voltar:hover{
+    background: #c58dff;
+}
+
+.titulo-principal{
+    text-align:center;
+    color:#bb63ff;
+    font-size:3rem;
+    margin:30px 0;
+    transition: opacity 0.3s;
+}
+
+.bloco-carta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 260px; 
+    position: relative;
+}
+
+.titulo-envelope {
+    color: #bb63ff;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 320px;
+    line-height: 1.3;
+}
+
+.envelope{
+    position:relative;
+    width:320px;
+    height:220px;
+}
+
+.corpo{
+    position:absolute;
+    inset:0;
+    background:#dcb3ff;
+    border-radius:0 0 25px 25px;
+    z-index:3;
+    box-shadow: 0 10px 30px rgba(187,99,255,.2);
+}
+
+.tampa{
+    position:absolute;
+    width:100%;
+    height:130px;
+    background:#c58dff;
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top;
+    transition: transform 0.8s ease-in-out, z-index 0.6s;
+    z-index:4;
+}
+
+.carta{
+    position:absolute;
+    left:10px;
+    top: 10px;
+    width:300px;
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    color:#a56df0;
+    z-index:2;
+    transform: translateY(0);
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 0.8s, z-index 0.8s;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.carta p{
+    font-family:'Cute', sans-serif;
+    font-size:1.3rem;
+    line-height:1.7;
+    margin-bottom:15px;
+}
+
+.area-foto {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.carta-img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(187,99,255,.15);
+}
+
+.assinatura{
+    text-align:right;
+    margin-top:25px;
+}
+
+.abrir{
+    margin-top:40px;
+    border:none;
+    background:#dcb3ff;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    font-size:1.1rem;
+    cursor:pointer;
+    box-shadow: 0 5px 15px rgba(187,99,255,.15);
+    z-index: 6;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.abrir:hover{
+    background: #c58dff;
+    transform: scale(1.05);
+}
+
+/* --- CLASSE GLOBAL PARA OCULTAR ELEMENTOS --- */
+.escondido {
+    display: none !important;
+}
+
+/* --- ESTILO DO BOTÃO QUANDO FIXADO EMBAIXO --- */
+.bloco-carta.aberto .abrir {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+    background: #bb63ff;
+    width: calc(100% - 40px);
+    max-width: 390px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(187,99,255,.4);
+    animation: surgirBotao 0.4s ease forwards;
+}
+
+@keyframes surgirBotao {
+    from { bottom: -20px; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+}
+
+/* --- EFEITO DE ABERTURA ANIMADA --- */
+
+.bloco-carta.aberto .tampa{
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+/* Agora a carta empurra o layout naturalmente para baixo, sem sobreposição fixa ruim */
+.bloco-carta.aberto .carta {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 320px;
+    transform: translateY(-40px); /* Pequeno ajuste de encaixe elegante */
+    opacity: 1;
+    z-index: 4;
+    margin-top: 20px;
+}
+
+</style>
+</head>
+
+<body>  
+
+<audio id="musica-fundo" loop>
+    <source src="mp3/Brooklyn_Baby_Originally_by_Lana_Del_Rey.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <div class="topo-acoes">
+        <button class="voltar" onclick="voltarPagina()">
+            ← Voltar
+        </button>
+    </div>
+
+    <h1 class="titulo-principal" id="tituloPrincipal">
+        MENSAGENS 
+    </h1>
+
+    <div class="bloco-carta">
+        <h2 class="titulo-envelope">Abra quando estiver se sentindo fraca ou vulnerável</h2>
+        
+        <div class="envelope">
+            <div class="tampa"></div>
+            <div class="corpo"></div>
+            
+            <div class="carta">
+                <div class="area-foto">
+                    <img src="https://i.pinimg.com/736x/b5/be/1e/b5be1e7f1323af339e6c576d96d35850.jpg" alt="Nossa Foto" class="carta-img">
+                </div>
+                <p>Se sentindo vulnerável de novo? Ou, na sua visão, fraca, talvez?
+                <br><br>
+                Meu amor, você pode se achar fraca ou vulnerável, tanto faz. Pensar assim é humano. Mas você precisa lembrar que não é resumida a um pensamento.
+                <br><br>
+                Saiba que, se várias pessoas disserem que você é algo positivo, talvez você não acredite. Porém, se uma única pessoa disser o contrário, você provavelmente acreditaria na hora. Não acha que esse é um jeito muito duro de olhar para si mesma?
+                <br><br>
+                As pessoas falam coisas sem pensar. Às vezes falam da boca para fora. Depois se arrependem, pedem desculpas e tentam compensar de alguma forma. Isso mostra que nem sempre aquilo que disseram era a verdade.
+                <br><br>
+                Meu bem, você não é fraca. Chorar não é sinal de fraqueza; é sinal de humanidade e liberdade. Pense em quantas pessoas sequer conseguem fazer isso. Você consegue expressar o que sente, e não deveria ter vergonha disso.
+                <br><br>
+                Não se resuma a um sentimento passageiro, nem a uma fala ou ação imprudente de alguém. Você é muito mais do que isso.
+                <br><br>
+                Você é uma pessoa incrível e mais forte do que imagina.
+                <br><br>
+                Parabéns por ter chegado até aqui e por continuar tentando.</p>
+                <p class="assinatura">Com amor</p>
+            </div>
+        </div>
+        <button class="abrir">Abrir Carta</button>
+    </div>
+
+    <div class="bloco-carta">
+        <h2 class="titulo-envelope">Abra quando você se sentir Incerta</h2>
+        
+        <div class="envelope">
+            <div class="tampa"></div>
+            <div class="corpo"></div>
+            
+            <div class="carta">
+                <div class="area-foto">
+                    <img src="https://i.pinimg.com/1200x/88/9f/35/889f354b4fda4c9f3ec587487e205852.jpg" alt="Foto Engraçada" class="carta-img">
+                </div>
+                <p>Incerta sobre algo? Isso é normal, na verdade… Não sabe se está indo no caminho certo, né? 
+
+Muitas vezes nós pensamos que a ordem certa é: CONFIANÇA —> AÇÃO —> RESULTADO. 
+Mas isso está totalmente errado. Pessoas não confiam cegamente em nada, pessoas não chegam em lugares sem errar primeiro. 
+
+Você pode primeiro dar uma ação, e então ter uma experiência, é comum. Não é o fim do mundo não ter certeza do que te espera, embora seja assustador às vezes. Marie Curie ( sei que vai rir ) , entrou em um ambiente de trabalho rodeado por homens, em uma sociedade machista, e um lugar onde não era bem vinda e tratada igual. Ela não sabia se iria dar certo, mas ela tentou, experienciou , e hoje é chamada de vencedora do Nobel. 
+
+Pessoas incríveis são cheias de incerteza, isso é humano, é comum, é totalmente necessário para evoluir. 
+
+Saiba que até as pessoas que falam de você pelas costas e te menosprezam, tem medo de suas capacidades. Todos tentam diminuir os outros para se sentirem melhores. E justamente por isso, não deixe que a opinião de quem te subestima determine o que você é capaz de fazer.
+
+Sei que é uma pessoa incrível, e que logo vai estar melhor de novo.</p>
+                <p class="assinatura">Com amor</p>
+            </div>
+        </div>
+        <button class="abrir">Abrir Carta</button>
+    </div>
+
+    <div class="bloco-carta">
+        <h2 class="titulo-envelope">Abra quando estiver com medo</h2>
+        
+        <div class="envelope">
+            <div class="tampa"></div>
+            <div class="corpo"></div>
+            
+            <div class="carta">
+                <div class="area-foto">
+                    <img src="https://i.pinimg.com/736x/db/5a/0e/db5a0eb3233c70f56a0faa6d6762d8c1.jpg" alt="Foto Cupom" class="carta-img">
+                </div>
+                <p>O medo é um sentimento comum que todas as pessoas já experienciaram várias vezes. Desde atravessar a rua, nadar, dirigir, tanto faz… 
+
+A questão é: Qual o benefício de se deixar levar pelo medo superficialmente? 
+
+Eu te digo, nenhum. Pessoa tem medo toda hora, isso nos mostra o quão incrível você é. Sentir medo de não ser bom o suficiente, de não ser compreendido, entre outros… Mostra que você se importa, que já andou metade do caminho. 
+
+Imagine quantas coisas incríveis podiam ter deixado de existir, só pelo medo que alguém teve de continuarem, então desistiram. 
+
+Pessoas normais, gênios, burros, altos, baixos, magros, gordos… todos sentem medo, e cabe a você decidir se vai ser tomado por ele não. 
+
+Sei que isso não vai acontecer. Conhecendo você, sei que vai continuar superando seus medos, como sempre fez. Você é uma pessoa forte, que já superou muitas coisas e medos, e acredito que também vai passar por isso
+</p>
+                <p class="assinatura">Com amor</p>
+            </div>
+        </div>
+        <button class="abrir">Abrir Carta</button>
+    </div>
+    <div class="bloco-carta">
+        <h2 class="titulo-envelope">Abra quando estiver com saudades</h2>
+        
+        <div class="envelope">
+            <div class="tampa"></div>
+            <div class="corpo"></div>
+            
+            <div class="carta">
+                <div class="area-foto">
+                    <img src="https://i.pinimg.com/736x/ea/cb/bb/eacbbb7a0f0c60719b92079ea06ab7fa.jpg" alt="Foto Cupom" class="carta-img">
+                </div>
+<p>I love you (Inglês)</p>
+<p>Je t'aime (Francês)</p>
+<p>Te amo (Espanhol)</p>
+<p>Ich liebe dich (Alemão)</p>
+<p>Ti amo (Italiano)</p>
+<p>Ik hou van je (Holandês)</p>
+<p>Я тебя люблю (Russo)</p>
+<p>我爱你 - Wǒ ài nǐ (Chinês Mandarim)</p>
+<p>愛している - Aishiteru (Japonês)</p>
+<p>사랑해 - Saranghae (Coreano)</p>
+<p>Seni seviyorum (Turco)</p>
+<p>Σ' αγαπώ - S'agapó (Grego)</p>
+<p>Я тебе кохаю - Ya tebe kokhayu (Ucraniano)</p>
+<p>Kocham cię (Polonês)</p>
+<p>Te iubesc (Romeno)</p>
+<p>Jeg elsker deg (Norueguês)</p>
+<p>Jag älskar dig (Sueco)</p>
+<p>Jeg elsker dig (Dinamarquês)</p>
+<p>Minä rakastan sinua (Finlandês)</p>
+<p>Szeretlek (Húngaro)</p>
+<p>Miluji tě (Tcheco)</p>
+<p>Milujem ťa (Eslovaco)</p>
+<p>Te dua (Albanês)</p>
+<p>Volim te (Croata / Sérvio / Bosníaco)</p>
+<p>أحبك - Uhibbuka (Árabe)</p>
+<p>אני אוהב אותך - Ani ohev otach (Hebraico)</p>
+<p>من تو را دوست دارم - Man to ra doost daram (Persa / Farsi)</p>
+<p>मैं तुमसे प्यार करता हूँ - Main tumse pyar karta hoon (Híndi)</p>
+<p>আমি তোমাকে ভালোবাসি - Ami tomake bhalobashi (Bengali)</p>
+<p>मैं तुमसे प्यार करता हूँ - Main tumase pyaara karata hoon (Marati)</p>
+<p>நான் உன்னை காதலிக்கிறேன் - Nāṉ uṉṉai kādalikkiṟēṉ (Tâmil)</p>
+<p>నేను నిన్ను ప్రేమిస్తున్నాను - Nēnu ninnu prēmistunnānu (Telugu)</p>
+<p>ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ - Nānu ninnannu prītīsuttēne (Canarim)</p>
+<p>ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു - Ñān ninne snēhikkunnu (Malaialam)</p>
+<p>હું તને પ્રેમ કરું છું - Huṁ tane prēma karuṁ chu (Gujarati)</p>
+<p>میں آپ سے محبت کرتا ہوں - Mein ap say muhabbat karta hoon (Urdu)</p>
+<p>Men seni sevaman (Uzbeque)</p>
+<p>Men seni süyemin (Cazaque)</p>
+<p>Сүйөм - Süyöm (Quirguiz)</p>
+<p>Saya cintamu (Indonésio)</p>
+<p>Saya cintakan mu (Malaio)</p>
+<p>Mahal kita (Filipino / Tagalo)</p>
+<p>Tôi yêu bạn (Vietnamita)</p>
+<p>ฉันรักคุณ - Chạn rạk khuṇ (Tailandês)</p>
+<p>khnhom srolanh neng (Cambojano / Khmer)</p>
+<p>Chit pa de (Birmanês)</p>
+<p>Mi amas vin (Esperanto)</p>
+<p>Aloha wau iā 'oe (Havaiano)</p>
+<p>Mau rāua te aroha (Maori)</p>
+<p>Ofa atu (Tonganes)</p>
+<p>Ia lauev nium (Fijiano)</p>
+<p>Guaiya hao (Chamorro)</p>
+<p>Mon koni (Samoano)</p>
+<p>Nakupenda (Suaíli)</p>
+<p>Ke a go rata (Tswana)</p>
+<p>Ndiyakuda (Xhosa)</p>
+<p>Ngiyakuthanda (Zulu)</p>
+<p>Ke a ku rata (Sotho)</p>
+<p>Inuuniarrit (Groenlandês)</p>
+<p>Me tula lema (Angolano / Umbundu)</p>
+<p>Nalingi yo (Lingala)</p>
+<p>Wa nzaani (Comoriano)</p>
+<p>Meda ase (Twi / Ganês)</p>
+<p>Ez te hezdikim (Curdo)</p>
+<p>მინდა ხარ ჩემი - Minda khar chemi (Georgiano)</p>
+<p>Ես քեզ սիրում եմ - Yes qez sirum yem (Armênio)</p>
+<p>Mən səni sevirəm (Azerbaijano)</p>
+<p>Volim te (Montenegrino)</p>
+<p>Сакам те - Sakam te (Macedônio)</p>
+<p>Обичам те - Obicham te (Búlgaro)</p>
+<p>Люблю цябе - Lyublyu cyabe (Bielorrusso)</p>
+<p>Es tevi mīlu (Letão)</p>
+<p>Aš tave myliu (Lituano)</p>
+<p>Ma armastan sind (Estoniano)</p>
+<p>Ég elska þig (Islandês)</p>
+<p>Is breá liom tú (Irlandês)</p>
+<p>Rwy'n dy garu di (Galês)</p>
+<p>Ta graih aym ort (Manx)</p>
+<p>Tha gaol agam ort (Gaélico Escocês)</p>
+<p>T'estim (Catalão)</p>
+<p>Maite zaitut (Basco)</p>
+<p>Quérote (Galego)</p>
+<p>Ti amu (Corso)</p>
+<p>Añat tye (Romani)</p>
+<p>Bi khyal tko (Assírio)</p>
+<p>Mhoro (Shona)</p>
+<p>Ni mwendwa (Kikuyu)</p>
+<p>Riyadh (Somali)</p>
+<p>Ina son ki (Hauçá)</p>
+<p>Mo n'ifée rẹ (Iorubá)</p>
+<p>Afurum gi nanya (Ibo)</p>
+<p>Techihua (Náuatle / Asteca)</p>
+<p>C'aj rutzil avach (Maia)</p>
+<p>Rohayhu (Guarani)</p>
+<p>Munakuyki (Quíchua)</p>
+<p>Ay munasma (Aimará)</p>
+<p>Nia tye (Papiamento)</p>
+<p>Mi lof iyu (Sranan Tongo)</p>
+<p>Chuvash (Chuvache)</p>
+<p>Kenang dhumateng sampeyan (Javanês)</p>
+                <p class="assinatura">Com amor</p>
+            </div>
+        </div>
+        <button class="abrir">Abrir Carta</button>
+    </div>
+</div>
+
+<script>
+const blocos = document.querySelectorAll(".bloco-carta");
+const tituloPrincipal = document.getElementById("tituloPrincipal");
+
+blocos.forEach((bloco) => {
+    const btn = bloco.querySelector(".abrir");
+
+    btn.addEventListener("click", () => {
+        bloco.classList.toggle("aberto");
+
+        if(bloco.classList.contains("aberto")){
+            btn.textContent = "Fechar ✖";
+            tituloPrincipal.classList.add("escondido");
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Esconde os outros blocos
+            blocos.forEach((outroBloco) => {
+                if(outroBloco !== bloco) {
+                    outroBloco.classList.add("escondido");
+                }
+            });
+        } else {
+            fecharQualquerCartaAberta();
+        }
+    });
+});
+
+function fecharQualquerCartaAberta() {
+    blocos.forEach((bloco) => {
+        bloco.classList.remove("aberto");
+        bloco.classList.remove("escondido");
+        const btn = bloco.querySelector(".abrir");
+        btn.textContent = "Abrir Carta";
+    });
+    tituloPrincipal.classList.remove("escondido");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function voltarPagina(){
+    const temCartaAberta = document.querySelector(".bloco-carta.aberto");
+
+    if (temCartaAberta) {
+        fecharQualquerCartaAberta();
+    } else {
+        if(history.length > 1){
+            history.back();
+        }else{
+            window.location.href = "inicial.html";
+        }
+    }
+}
+</script>   
+
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+musicaFundo.volume = 0.05;
+
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+</script>
+
+</body>
+</html>

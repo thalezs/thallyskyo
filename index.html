@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login</title>
+
+<style>
+
+.heart-btn.animar{
+    animation: abrirCoracao .8s ease forwards;
+}
+
+@keyframes abrirCoracao{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    20%{
+        transform:scale(1.15);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(2.5);
+        opacity:0;
+    }
+
+}
+
+@font-face {
+    font-family: 'Heart';
+    src: url('fonts/fonte.ttf') format('truetype');
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Heart';
+}
+
+body{
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#ffffff;
+
+    overflow:hidden;
+    position:relative;
+}
+
+/* Gradiente principal */
+
+body::before{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background:
+
+    radial-gradient(
+        circle at top center,
+        rgba(193,132,255,.9),
+        transparent 45%
+    ),
+
+    radial-gradient(
+        circle at bottom left,
+        rgba(193,132,255,.8),
+        transparent 40%
+    ),
+
+    radial-gradient(
+        circle at bottom right,
+        rgba(193,132,255,.8),
+        transparent 40%
+    );
+
+    filter:blur(80px);
+
+    z-index:-2;
+}
+
+/* Brilho branco */
+
+body::after{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background:
+
+    radial-gradient(
+        circle at center,
+        rgba(255,255,255,.9),
+        transparent 55%
+    );
+
+    filter:blur(40px);
+
+    z-index:-1;
+}
+
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.heart-btn{
+    position:relative;
+
+    border:none;
+    background:none;
+    cursor:pointer;
+
+    animation:pulse 3s infinite;
+    transition:.3s;
+}
+
+.heart-btn:hover{
+    transform:scale(1.05);
+}
+
+.heart-btn:active{
+    transform:scale(.95);
+}
+
+.heart{
+    width:85vw;
+    max-width:520px;
+
+    display:block;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.04);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+body.fade-out{
+    animation: fadeTela .8s forwards;
+}
+
+@keyframes fadeTela{
+
+    from{
+        opacity:1;
+    }
+
+    to{
+        opacity:0;
+    }
+
+}
+</style>
+</head>
+<body>
+<audio id="musica-fundo" loop>
+    <source src="mp3/attracted_to_you-_pinkpantheress_sped_up.mp3" type="audio/mpeg">
+</audio>    
+<div class="container">
+
+    <button class="heart-btn">
+
+        <img
+            src="img/coração.png"
+            alt="Coração"
+            class="heart"
+        >
+    </button>
+
+</div>
+
+<script>
+
+const heartBtn = document.querySelector('.heart-btn');
+
+heartBtn.addEventListener('click', () => {
+
+    heartBtn.classList.add('animar');
+
+    setTimeout(() => {
+        window.location.href = "senha.html";
+    }, 800);
+
+});
+
+heartBtn.addEventListener('click', () => {
+
+    heartBtn.classList.add('animar');
+    document.body.classList.add('fade-out');
+
+    setTimeout(() => {
+        window.location.href = "senha.html";
+    }, 800);
+
+});
+</script>
+<script>
+const musicaFundo = document.getElementById("musica-fundo");
+
+musicaFundo.volume = 0.05;
+
+document.addEventListener("click", () => {
+    musicaFundo.play();
+}, { once: true });
+</script>
+</body>
+</html>
